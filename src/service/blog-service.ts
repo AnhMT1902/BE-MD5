@@ -1,7 +1,7 @@
 import {Blog} from "../model/Blog";
 import {AppDataSource} from "../data-source";
 
- class BlogService {
+class BlogService {
     private blogRepository: any;
 
     constructor() {
@@ -11,9 +11,11 @@ import {AppDataSource} from "../data-source";
         })
     }
 
-
-
+    getAll = async () => {
+        return await this.blogRepository.find()
+    }
 
 
 }
-export  default  new BlogService
+
+export default new BlogService

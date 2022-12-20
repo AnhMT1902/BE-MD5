@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import {SECRET} from "../middleware/auth";
 import jwt from "jsonwebtoken";
 
+
 class UserController {
 
     register = async (req: Request, res: Response) => {
