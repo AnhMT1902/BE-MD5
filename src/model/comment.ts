@@ -12,7 +12,7 @@ export class Comment {
     @Column({type: 'text'})
     public content: string
     @ManyToOne((_type) => Blog, (blog: Blog) => blog.id)
-    public blog: Blog;
+    public blog!: Blog;
     @ManyToOne((_type) => User, (user: User) => user.id)
-    public user: User
+    public user!: User;
 }

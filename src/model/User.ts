@@ -18,7 +18,7 @@ export class User {
     @OneToMany((_type) => Blog, (blog: Blog) => blog.user)
     public blog?: Blog[];
     @OneToMany((_type)=> Comment, (comment: Comment)=> comment.user)
-    public comment: Comment[]
+    public comment?: Comment[];
     @OneToOne(() => Like)
     @JoinColumn()
     like: Like
