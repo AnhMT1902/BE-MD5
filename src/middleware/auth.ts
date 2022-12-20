@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-export const SECRET = "financial"
+export const SECRET = "abc"
 export const auth = (req, res, next) => {
     let authorization = req.headers.authorization;
     if (authorization) {

@@ -1,19 +1,28 @@
 import {Request, Response,} from "express";
-import UserService from "../service/user-service";
+
 import bcrypt from 'bcrypt';
-import {SECRET} from "../middleware/auth";
 import jwt from "jsonwebtoken";
+import {AppDataSource} from "../data-source";
+import {User} from "../model/User";
+import UserService from "../service/user-service";
 
 class UserController {
 
-    register = async (req: Request, res: Response) => {
-        let user = await UserService.register()
+
+    getAll = async (req:Request,res:Response)=> {
+        let user = await UserService.findAll()
         return res.status(200).json(user)
+    }
+
+    register = async (req: Request, res: Response) => {
+        console.log(req.body)
+        let addUser = await UserService.save(req.body)
+        return res.status(200).json(addUser)
     }
 
     login = async (req: Request, res: Response) => {
         let user = req.body;
-        let userFind = await UserService.login(user)
+        let userFind = await UserService.login(user.username)
         if (!userFind) {
             return res.status(201).json({
                 mess: "Error User or Password!!!"
@@ -29,27 +38,24 @@ class UserController {
                     idUser: userFind._id,
                     username: userFind.username
                 }
+                let SECRET = 'ha'
                 let token = await jwt.sign(payload, SECRET, {
                     expiresIn: 36000
                 })
                 return res.status(200).json({
                     token: token,
                     mess: 'Success!',
-                    idUser: userFind._id
                 })
             }
         }
     }
 
-    editAccount = async (req: Request, res: Response) => {
-        let id = req.params.id
-        await UserService.editAccount({_id: id})
-        return res.status(201).json({
-            mess:'Edit Success!'
+    delete = async (req:Request,res:Response) => {
+        await UserService.deleteUser(req.params.id)
+        return res.status(204).json({
+            mess: 'Delete Success !'
         })
     }
-
-
 
 }
 

@@ -1,7 +1,7 @@
 import {AppDataSource} from "../data-source";
 import {Request, Response} from "express";
 import {User} from "../model/User";
-
+import bcrypt from 'bcrypt';
 
 class UserService {
     private userRepository: any;
@@ -12,20 +12,32 @@ class UserService {
         })
     }
 
-    register = async () => {
+    findAll = async () => {
         return await this.userRepository.find()
-
     }
 
-    login = async (user) => {
-        return await this.userRepository.findOneBy(user);
-    }
-    getAll = async () => {
-         return await this.userRepository.find()
+    save = async (user) => {
+        let userFind = await this.userRepository.findOneBy({username: user.username})
+        if (!userFind) {
+            user.password = await bcrypt.hash(user.password, 10)
+            return await this.userRepository.save(user)
+        } else {
+
+            return {
+                message: "has the same name"
+            }
+        }
     }
 
-    editAccount = async (id) => {
-        return await this.userRepository.findOneById(id)
+    login = async (username) => {
+        console.log(username);
+        let query = `select * from users where username = '${username}'`
+        return (await this.userRepository.query(query))[0];
+    }
+
+    deleteUser = async (id) => {
+        const query = `DELETE FROM user WHERE id = ` + id;
+        return await this.userRepository.query(query)
     }
 
 }
