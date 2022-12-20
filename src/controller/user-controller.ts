@@ -1,7 +1,6 @@
 import {Request, Response,} from "express";
 import UserService from "../service/user-service";
 
-
 class UserController {
     register = async (req: Request, res: Response) => {
         let user = await UserService.register()
